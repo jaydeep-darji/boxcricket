@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Team Registration</title>
+  <style>
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content-sch {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      position: relative;
+    }
+    .close-registration {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .form-group-sch {
+      margin-bottom: 10px;
+    }
+    .form-group-sch input {
+      width: 100%;
+      padding: 8px;
+    }
+    .btn-add-player, .btn-sch {
+      margin-top: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<button id="openRegistrationBtn" class="register-btn">Register New Team</button>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay" id="registrationModal">
+  <div class="modal-content-sch">
+    <span class="close-registration" id="closeModal">&times;</span>
+    <h3>Register New Team</h3>
+    <form id="teamForm">
+      <div class="form-group-sch">
+        <label for="teamName">Team Name</label>
+        <input type="text" id="teamName" name="teamName" required placeholder="Enter your team name">
+      </div>
+      <div class="form-group-sch">
+        <label for="captainName">Captain Name</label>
+        <input type="text" id="captainName" name="captainName" required placeholder="Enter captain's name">
+      </div>
+      <div class="form-group-sch">
+        <label for="contact">Contact Number</label>
+        <input type="tel" id="contact" name="contact" required placeholder="Enter contact number">
+      </div>
+      <div class="form-group-sch">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="Enter email address">
+      </div>
+      <div class="form-group-sch">
+        <label>Team Members <span id="playerCountLabel">(0/16 players)</span></label>
+        <div id="playersContainer"></div>
+        <button type="button" id="addPlayerBtn" class="btn-add-player">Add Player</button>
+        <span class="players-counter">Min: 6, Max: 16 players</span>
+      </div>
+      <button type="submit" class="btn-sch">Register Team</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  let playerCount = 0;
+  const maxPlayers = 16;
+  const minPlayers = 6;
+
+  document.getElementById("openRegistrationBtn").addEventListener("click", () => {
+    document.getElementById("registrationModal").style.display = "flex";
+  });
+
+  document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("registrationModal").style.display = "none";
+  });
+
+  document.getElementById("addPlayerBtn").addEventListener("click", () => {
+    if (playerCount >= maxPlayers) {
+      alert("You can add a maximum of 16 players.");
+      return;
+    }
+
+    playerCount++;
+    const container = document.getElementById("playersContainer");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "player" + playerCount;
+    input.placeholder = "Player " + playerCount + " Name";
+    input.required = true;
+    container.appendChild(input);
+
+    document.getElementById("playerCountLabel").innerText = `(${playerCount}/16 players)`;
+  });
+
+  document.getElementById("teamForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const teamName = document.getElementById("teamName").value.trim();
+    const captainName = document.getElementById("captainName").value.trim();
+    const contact = document.getElementById("contact").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if (!/^\d{10}$/.test(contact)) {
+      alert("Contact number must be 10 digits.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("Invalid email format.");
+      return;
+    }
+
+    const playerInputs = document.querySelectorAll("#playersContainer input");
+    if (playerInputs.length < minPlayers) {
+      alert("Minimum 6 players required.");
+      return;
+    }
+
+    const players = Array.from(playerInputs).map(input => input.value.trim());
+    if (players.some(name => name === "")) {
+      alert("All player fields must be filled.");
+      return;
+    }
+
+    const teamData = {
+      teamName,
+      captainName,
+      contact,
+      email,
+      players
+    };
+
+    console.log("Sending this data to backend:", teamData);
+
+    fetch('/registerTeam.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(teamData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert("Team registered successfully!");
+      document.getElementById("teamForm").reset();
+      document.getElementById("playersContainer").innerHTML = "";
+      playerCount = 0;
+      document.getElementById("playerCountLabel").innerText = "(0/16 players)";
+      document.getElementById("registrationModal").style.display = "none";
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("Something went wrong!");
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking Payment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+    .payment-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+    .input-box, .select-box {
+      margin-bottom: 15px;
+    }
+    .input-box input, .select-box select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .payment-method-options {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 15px;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .upi-section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .upi-option {
+      cursor: pointer;
+      padding: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      width: 48%;
+      text-align: center;
+    }
+    .upi-option.active {
+      background-color: #2196f3;
+      color: #fff;
+    }
+    .qr-code {
+      padding: 20px;
+      background: #e8e8e8;
+      text-align: center;
+      border-radius: 5px;
+    }
+    .button {
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .booking-confirmation {
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="payment-container">
+    <h2>Book Now</h2>
+    <form id="bookingForm">
+      <div class="input-box">
+        <input type="text" id="username" placeholder="Username" required />
+      </div>
+      <div class="input-box">
+        <input type="text" id="mobile" placeholder="Mobile Number" required pattern="[0-9]{10}" />
+      </div>
+      <div class="input-box">
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+      <div class="select-box">
+        <select id="duration" required>
+          <option value="">Select Duration</option>
+          <option value="1">1 Hour - ₹400</option>
+          <option value="2">2 Hours - ₹700</option>
+          <option value="3">3 Hours - ₹900</option>
+        </select>
+      </div>
+      <div class="select-box">
+        <select id="timeSlot" required>
+          <option value="">Select Time Slot</option>
+        </select>
+      </div>
+      <div class="input-box">
+        <input type="text" id="amount" placeholder="Total Amount" readonly />
+      </div>
+
+      <!-- Payment Options -->
+      <div class="payment-options">
+        <h3>Payment Method</h3>
+        <div class="payment-method-options">
+          <div class="payment-option">
+            <input type="radio" id="online" name="paymentMethod" value="online" checked>
+            <label for="online">Online Payment</label>
+          </div>
+          <div class="payment-option">
+            <input type="radio" id="offline" name="paymentMethod" value="offline">
+            <label for="offline">Pay at Venue</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Online Payment Details -->
+      <div id="onlinePaymentDetails">
+        <div class="upi-section">
+          <div class="upi-option active" id="upiIdOption">UPI ID</div>
+          <div class="upi-option" id="qrCodeOption">QR Code</div>
+        </div>
+        <div id="upiIdSection">
+          <div class="input-box">
+            <input type="text" id="upiId" placeholder="Enter UPI ID (example@upi)" />
+          </div>
+        </div>
+        
+      </div>
+
+      <button type="submit" class="button">Confirm Booking</button>
+    </form>
+
+    <!-- Booking Confirmation -->
+    <div class="booking-confirmation" id="confirmationSection">
+      <h2>Booking Confirmed!</h2>
+      <p><strong>Booking ID:</strong> <span id="bookingId"></span></p>
+      <p><strong>Name:</strong> <span id="confirmName"></span></p>
+      <p><strong>Duration:</strong> <span id="confirmDuration"></span></p>
+      <p><strong>Time Slot:</strong> <span id="confirmTime"></span></p>
+      <p><strong>Amount:</strong> <span id="confirmAmount"></span></p>
+      <p><strong>Payment Method:</strong> <span id="confirmMethod"></span></p>
+    </div>
+  </div>
+
+  <script>
+    const durationSelect = document.getElementById('duration');
+    const timeSlotSelect = document.getElementById('timeSlot');
+    const amountInput = document.getElementById('amount');
+    const upiIdOption = document.getElementById('upiIdOption');
+    const qrCodeOption = document.getElementById('qrCodeOption');
+    const upiIdSection = document.getElementById('upiIdSection');
+    const qrCodeSection = document.getElementById('qrCodeSection');
+    const onlinePaymentDetails = document.getElementById('onlinePaymentDetails');
+
+    const timeSlots = {
+        '1': ['6:00 AM - 7:00 AM', '7:00 AM - 8:00 AM', '8:00 AM - 9:00 AM', '5:00 PM - 6:00 PM', '6:00 PM - 7:00 PM', '7:00 PM - 8:00 PM', '8:00 PM - 9:00 PM', '9:00 PM - 10:00 PM'],
+        '2': ['6:00 AM - 8:00 AM', '8:00 AM - 10:00 AM', '5:00 PM - 7:00 PM', '7:00 PM - 9:00 PM', '8:00 PM - 10:00 PM'],
+        '3': ['6:00 AM - 9:00 AM', '5:00 PM - 8:00 PM', '7:00 PM - 10:00 PM']
+    };
+    
+    const prices = {
+        '1': 400,
+        '2': 700,
+        '3': 900
+    };
+
+    durationSelect.addEventListener('change', () => {
+      const val = durationSelect.value;
+      amountInput.value = val ? `₹${prices[val]}` : '';
+      timeSlotSelect.innerHTML = `<option value="">Select Time Slot</option>`;
+      if (val) {
+        timeSlots[val].forEach(slot => {
+          const option = document.createElement('option');
+          option.value = slot;
+          option.textContent = slot;
+          timeSlotSelect.appendChild(option);
+        });
+      }
+    });
+
+    // UPI method switch
+    upiIdOption.onclick = () => {
+      upiIdOption.classList.add('active');
+      qrCodeOption.classList.remove('active');
+      upiIdSection.style.display = 'block';
+      qrCodeSection.style.display = 'none';
+    };
+
+    qrCodeOption.onclick = () => {
+      qrCodeOption.classList.add('active');
+      upiIdOption.classList.remove('active');
+      upiIdSection.style.display = 'none';
+      qrCodeSection.style.display = 'block';
+    };
+
+    document.getElementById('bookingForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const durationText = durationSelect.options[durationSelect.selectedIndex].text;
+      const timeSlot = timeSlotSelect.value;
+      const amount = amountInput.value;
+      const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+      if (method === 'online') {
+        if (upiIdOption.classList.contains('active') && !document.getElementById('upiId').value) {
+          alert('Please enter your UPI ID');
+          return;
+        }
+      }
+
+      document.getElementById('bookingForm').style.display = 'none';
+      document.getElementById('confirmationSection').style.display = 'block';
+
+      document.getElementById('bookingId').textContent = 'BCT' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('confirmName').textContent = username;
+      document.getElementById('confirmDuration').textContent = durationText;
+      document.getElementById('confirmTime').textContent = timeSlot;
+      document.getElementById('confirmAmount').textContent = amount;
+      document.getElementById('confirmMethod').textContent = method === 'online' ? 'Online (UPI)' : 'Offline (Pay at Venue)';
+    });
+
+    document.getElementById('mobile').addEventListener('input', function (e) {
+      e.target.value = e.target.value.replace(/\D/g, '').substring(0, 10);
+    });
+
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.value === 'online') {
+          onlinePaymentDetails.style.display = 'block';
+        } else {
+          onlinePaymentDetails.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

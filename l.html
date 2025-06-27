@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Box Cricket Tournament Booking</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .header p {
+      margin: 10px 0 0 0;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .main-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px 20px;
+      background: #f8f9fa;
+    }
+
+    .btn-main {
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Modal Styles */
+    .modal-sch {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content-sch {
+      background: #fff;
+      margin: 5% auto;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.5rem;
+    }
+
+    .close-sch {
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #999;
+      transition: color 0.3s;
+    }
+
+    .close-sch:hover {
+      color: #333;
+    }
+
+    .form-group-sch {
+      margin-bottom: 20px;
+    }
+
+    .form-group-sch label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-group-sch input,
+    .form-group-sch select,
+    .form-group-sch textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group-sch input:focus,
+    .form-group-sch select:focus,
+    .form-group-sch textarea:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    .btn-sch {
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-sch:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    .member-row {
+      margin-bottom: 12px;
+    }
+
+    .member-row input {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+    }
+
+    /* Payment Styles */
+    .payment-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .payment-options h4 {
+      margin-bottom: 15px;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .payment-method-options {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .payment-option input[type="radio"] {
+      width: auto;
+    }
+
+    .payment-option label {
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    #onlinePaymentDetails {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      margin-top: 15px;
+    }
+
+    .upi-section {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .upi-option {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .upi-option:hover {
+      border-color: #28a745;
+      background-color: #f8fff8;
+    }
+
+    .upi-option.active {
+      border-color: #28a745;
+      background-color: #e6ffe6;
+    }
+
+    .upi-option h5 {
+      margin: 0 0 8px 0;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .upi-option p {
+      margin: 0;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .qr-code-container {
+      text-align: center;
+      padding: 20px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .qr-code {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 15px;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 8px;
+    }
+
+    .qr-code canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .upi-id-display {
+      font-weight: bold;
+      color: #28a745;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .booking-confirmation {
+      display: none;
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #d4edda, #c3e6cb);
+      border: 2px solid #b2dfb2;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+
+    .booking-confirmation h3 {
+      color: #155724;
+      margin-bottom: 20px;
+    }
+
+    .confirmation-details {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .confirmation-details p {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .confirmation-details strong {
+      color: #333;
+    }
+
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #28a745;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .cost-display {
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .cost-display h4 {
+      margin: 0;
+      color: #1976d2;
+      font-size: 18px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn-main {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .payment-method-options {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .upi-section {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .qr-code {
+        width: 150px;
+        height: 150px;
+      }
+
+      .modal-content-sch {
+        margin: 2% auto;
+        width: 95%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container">
+  <div class="header">
+    <h1>🏏 Box Cricket Tournament</h1>
+    <p>Professional Cricket Booking & Tournament Management System</p>
+  </div>
+
+  <div class="main-buttons">
+    <button id="registerTeam" class="btn-main">📝 Register Team</button>
+    <button id="createTournament" class="btn-main">🏆 Create Tournament</button>
+    <button id="bookSlot" class="btn-main">📅 Book Slot</button>
+  </div>
+</div>
+
+<!-- Team Registration Modal -->
+<div id="teamRegistrationModal" class="modal-sch">
+  <div class="modal-content-sch">
+    <div class="modal-header">
+      <h3>Register New Team</h3>
+      <span class="close-registration close-sch">&times;</span>
+    </div>
+    <form id="teamRegistrationForm">
+      <div class="form-group-sch">
+        <label for="teamName">Team Name</label>
+        <input type="text" id="teamName" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="captainName">Captain Name</label>
+        <input type="text" id="captainName" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="contactNumber">Contact Number</label>
+        <input type="tel" id="contactNumber" required pattern="[0-9]{10}">
+      </div>
+      <div class="form-group-sch">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group-sch">
+        <label>Team Members (6-8 players)</label>
+        <div id="teamMembers">
+          <div class="member-row"><input type="text" class="member-name" placeholder="Player 1" required></div>
+          <div class="member-row"><input type="text" class="member-name" placeholder="Player 2" required></div>
+          <div class="member-row"><input type="text" class="member-name" placeholder="Player 3" required></div>
+          <div class="member-row"><input type="text" class="member-name" placeholder="Player 4" required></div>
+          <div class="member-row"><input type="text" class="member-name" placeholder="Player 5" required></div>
+          <div class="member-row"><input type="text" class="member-name" placeholder="Player 6" required></div>
+        </div>
+        <button type="button" id="addPlayer" class="btn-sch" style="margin-top:10px;">Add Player</button>
+      </div>
+      
+      <div class="cost-display">
+        <h4>Registration Fee: ₹500</h4>
+      </div>
+
+      <!-- Payment Section -->
+      <div class="payment-section">
+        <div class="payment-options">
+          <h4>Payment Method</h4>
+          <div class="payment-method-options">
+            <div class="payment-option">
+              <input type="radio" id="teamOnline" name="teamPaymentMethod" value="online" checked>
+              <label for="teamOnline">Online Payment</label>
+            </div>
+            <div class="payment-option">
+              <input type="radio" id="teamOffline" name="teamPaymentMethod" value="offline">
+              <label for="teamOffline">Pay at Venue</label>
+            </div>
+          </div>
+        </div>
+        
+        <div id="teamOnlinePaymentDetails">
+          <div id="teamUpiDetails">
+            <div class="upi-section">
+              <div class="upi-option active" id="teamUpiIdOption">
+                <h5>UPI ID</h5>
+                <p>Enter your UPI ID</p>
+              </div>
+              <div class="upi-option" id="teamQrCodeOption">
+                <h5>QR Code</h5>
+                <p>Scan QR Code to pay</p>
+              </div>
+            </div>
+            
+            <div id="teamUpiIdSection">
+              <div class="form-group-sch">
+                <input type="text" id="teamUpiId" placeholder="Enter UPI ID (example@upi)" />
+              </div>
+            </div>
+            
+            <div id="teamQrCodeSection" style="display: none;">
+              <div class="qr-code-container">
+                <div class="upi-id-display" id="teamGeneratedUpiId"></div>
+                <div class="qr-code" id="teamQrCode">
+                  <p>QR Code will appear here</p>
+                </div>
+                <p>Scan this QR code with any UPI app to pay ₹500</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-sch" style="width: 100%; font-size: 16px; padding: 15px;">Register Team</button>
+    </form>
+
+    <div class="booking-confirmation" id="teamBookingConfirmation">
+      <h3>🎉 Team Registration Successful!</h3>
+      <div class="confirmation-details">
+        <p><strong>Registration ID:</strong> <span id="teamRegistrationId"></span></p>
+        <p><strong>Team Name:</strong> <span id="confirmTeamName"></span></p>
+        <p><strong>Captain:</strong> <span id="confirmCaptainName"></span></p>
+        <p><strong>Contact:</strong> <span id="confirmContact"></span></p>
+        <p><strong>Registration Fee:</strong> <span>₹500</span></p>
+        <p><strong>Payment Method:</strong> <span id="confirmTeamPayment"></span></p>
+      </div>
+      <p>Registration confirmation has been sent to your email and mobile.</p>
+      <button class="btn-sch" onclick="resetTeamForm()">Register Another Team</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tournament Modal -->
+<div id="tournamentModal" class="modal-sch">
+  <div class="modal-content-sch">
+    <div class="modal-header">
+      <h3>Create Tournament</h3>
+      <span class="close-tournament close-sch">&times;</span>
+    </div>
+    <form id="tournamentForm">
+      <div class="form-group-sch">
+        <label for="tournamentName">Tournament Name</label>
+        <input type="text" id="tournamentName" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="teamCount">Number of Teams</label>
+        <select id="teamCount" required>
+          <option value="">Select</option>
+          <option value="4">4 Teams</option>
+          <option value="8">8 Teams</option>
+          <option value="16">16 Teams</option>
+        </select>
+      </div>
+      <div class="form-group-sch">
+        <label for="entryFee">Entry Fee per Team (₹)</label>
+        <input type="number" id="entryFee" required min="100">
+      </div>
+      <div class="form-group-sch">
+        <label for="tournamentRules">Tournament Rules</label>
+        <textarea id="tournamentRules" rows="4" placeholder="Rules and regulations..."></textarea>
+      </div>
+
+      <div class="cost-display">
+        <h4 id="tournamentCost">Organization Fee: ₹2000</h4>
+      </div>
+
+      <!-- Payment Section -->
+      <div class="payment-section">
+        <div class="payment-options">
+          <h4>Payment Method</h4>
+          <div class="payment-method-options">
+            <div class="payment-option">
+              <input type="radio" id="tournamentOnline" name="tournamentPaymentMethod" value="online" checked>
+              <label for="tournamentOnline">Online Payment</label>
+            </div>
+            <div class="payment-option">
+              <input type="radio" id="tournamentOffline" name="tournamentPaymentMethod" value="offline">
+              <label for="tournamentOffline">Pay at Venue</label>
+            </div>
+          </div>
+        </div>
+        
+        <div id="tournamentOnlinePaymentDetails">
+          <div id="tournamentUpiDetails">
+            <div class="upi-section">
+              <div class="upi-option active" id="tournamentUpiIdOption">
+                <h5>UPI ID</h5>
+                <p>Enter your UPI ID</p>
+              </div>
+              <div class="upi-option" id="tournamentQrCodeOption">
+                <h5>QR Code</h5>
+                <p>Scan QR Code to pay</p>
+              </div>
+            </div>
+            
+            <div id="tournamentUpiIdSection">
+              <div class="form-group-sch">
+                <input type="text" id="tournamentUpiId" placeholder="Enter UPI ID (example@upi)" />
+              </div>
+            </div>
+            
+            <div id="tournamentQrCodeSection" style="display: none;">
+              <div class="qr-code-container">
+                <div class="upi-id-display" id="tournamentGeneratedUpiId"></div>
+                <div class="qr-code" id="tournamentQrCode">
+                  <p>QR Code will appear here</p>
+                </div>
+                <p>Scan this QR code with any UPI app to pay ₹2000</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-sch" style="width: 100%; font-size: 16px; padding: 15px;">Create Tournament</button>
+    </form>
+
+    <div class="booking-confirmation" id="tournamentBookingConfirmation">
+      <h3>🏆 Tournament Created Successfully!</h3>
+      <div class="confirmation-details">
+        <p><strong>Tournament ID:</strong> <span id="tournamentId"></span></p>
+        <p><strong>Tournament Name:</strong> <span id="confirmTournamentName"></span></p>
+        <p><strong>Start Date:</strong> <span id="confirmStartDate"></span></p>
+        <p><strong>End Date:</strong> <span id="confirmEndDate"></span></p>
+        <p><strong>Teams:</strong> <span id="confirmTeamCount"></span></p>
+        <p><strong>Entry Fee:</strong> <span id="confirmEntryFee"></span></p>
+        <p><strong>Organization Fee:</strong> <span>₹2000</span></p>
+        <p><strong>Payment Method:</strong> <span id="confirmTournamentPayment"></span></p>
+      </div>
+      <p>Tournament details have been sent to your email.</p>
+      <button class="btn-sch" onclick="resetTournamentForm()">Create Another Tournament</button>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Modal -->
+<div id="bookingModal" class="modal-sch">
+  <div class="modal-content-sch">
+    <div class="modal-header">
+      <h3>Book a Slot</h3>
+      <span class="close-sch">&times;</span>
+    </div>
+    <form id="bookingForm">
+      <div class="form-group-sch">
+        <label for="playerName">Your Name</label>
+        <input type="text" id="playerName" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="playerMobile">Mobile Number</label>
+        <input type="tel" id="playerMobile" required pattern="[0-9]{10}">
+      </div>
+      <div class="form-group-sch">
+        <label for="playerEmail">Email Address</label>
+        <input type="email" id="playerEmail" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="slotDate">Date</label>
+        <input type="date" id="slotDate" required>
+      </div>
+      <div class="form-group-sch">
+        <label for="slotTime">Time Slot</label>
+        <select id="slotTime" required>
+          <option value="">Select Time</option>
+          <option value="09:00-10:00">09:00 AM - 10:00 AM</option>
+          <option value="10:00-11:00">10:00 AM - 11:00 AM</option>
+          <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
+          <option value="14:00-15:00">02:00 PM - 03:00 PM</option>
+          <option value="15:00-16:00">03:00 PM - 04:00 PM</option>
+          <option value="16:00-17:00">04:00 PM - 05:00 PM</option>
+          <option value="17:00-18:00">05:00 PM - 06:00 PM</option>
+          <option value="18:00-19:00">06:00 PM - 07:00 PM</option>
+        </select>
+      </div>
+      <div class="form-group-sch">
+        <label for="slotDuration">Duration</label>
+        <select id="slotDuration" required>
+          <option value="1">1 Hour - ₹400</option>
+          <option value="2">2 Hours - ₹700</option>
+          <option value="3">3 Hours - ₹900</option>
+        </select>
+      </div>
+      <div class="form-group-sch">
+        <label for="opponents">Opponent Team (optional)</label>
+        <input type="text" id="opponents" placeholder="Opponent team name">
+      </div>
+
+      <div class="cost-display">
+        <h4 id="slotCost">Slot Cost: ₹400</h4>
+      </div>
+
+      <!-- Payment Section -->
+      <div class="payment-section">
+        <div class="payment-options">
+          <h4>Payment Method</h4>
+          <div class="payment-method-options">
+            <div class="payment-option">
+              <input type="radio" id="slotOnline" name="slotPaymentMethod" value="online" checked>
+              <label for="slotOnline">Online Payment</label>
+            </div>
+            <div class="payment-option">
+              <input type="radio" id="slotOffline" name="slotPaymentMethod" value="offline">
+              <label for="slotOffline">Pay at Venue</label>
+            </div>
+          </div>
+        </div>
+        
+        <div id="slotOnlinePaymentDetails">
+          <div id="slotUpiDetails">
+            <div class="upi-section">
+              <div class="upi-option active" id="slotUpiIdOption">
+                <h5>UPI ID</h5>
+                <p>Enter your UPI ID</p>
+              </div>
+              <div class="upi-option" id="slotQrCodeOption">
+                <h5>QR Code</h5>
+                <p>Scan QR Code to pay</p>
+              </div>
+            </div>
+            
+            <div id="slotUpiIdSection">
+              <div class="form-group-sch">
+                <input type="text" id="slotUpiId" placeholder="Enter UPI ID (example@upi)" />
+              </div>
+            </div>
+            
+            <div id="slotQrCodeSection" style="display: none;">
+              <div class="qr-code-container">
+                <div class="upi-id-display" id="slotGeneratedUpiId"></div>
+                <div class="qr-code" id="slotQrCode">
+                  <p>QR Code will appear here</p>
+                </div>
+                <p id="slotQrText">Scan this QR code with any UPI app to pay</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-sch" style="width: 100%; font-size: 16px; padding: 15px;">Book Slot</button>
+    </form>
+
+    <div class="booking-confirmation" id="slotBookingConfirmation">
+      <h3>✅ Slot Booked Successfully!</h3>
+      <div class="confirmation-details">
+        <p><strong>Booking ID:</strong> <span id="slotBookingId"></span></p>
+        <p><strong>Name:</strong> <span id="confirmPlayerName"></span></p>
+        <p><strong>Date:</strong> <span id="confirmSlotDate"></span></p>
+        <p><strong>Time:</strong> <span id="confirmSlotTime"></span></p>
+        <p><strong>Duration:</strong> <span id="confirmDuration"></span></p>
+        <p><strong>Amount:</strong> <span id="confirmSlotAmount"></span></p>
+        <p><strong>Payment Method:</strong> <span id="confirmSlotPayment"></span></p>
+      </div>
+      <p>Booking confirmation has been sent to your email and mobile.</p>
+      <button class="btn-sch" onclick="resetSlotForm()">Book Another Slot</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loader"></div>
+  <p>Processing payment...</p>
+</div>
+
+<!-- QR Code Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Set minimum date to today for all date inputs
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('startDate').min = today;
+  document.getElementById('endDate').min = today;
+  document.getElementById('slotDate').min = today;
+
+  // Modal toggle functions
+  document.getElementById("registerTeam").onclick = () =>
+    document.getElementById("teamRegistrationModal").style.display = "block";
+
+  document.getElementById("createTournament").onclick = () =>
+    document.getElementById("tournamentModal").style.display = "block";
+
+  document.getElementById("bookSlot").onclick = () =>
+    document.getElementById("bookingModal").style.display = "block";
+
+  // Close modal functions
+  document.querySelectorAll(".close-sch").forEach(btn =>
+    btn.onclick = () => btn.closest(".modal-sch").style.display = "none"
+  );
+
+  // Close modal when clicking outside
+  window.onclick = (event) => {
+    if (event.target.classList.contains('modal-sch')) {
+      event.target.style.display = "none";
+    }
+  };
+
+  // Add player functionality
+  document.getElementById("addPlayer").onclick = () => {
+    const container = document.getElementById("teamMembers");
+    const count = container.children.length + 1;
+    if (count <= 8) {
+      const row = document.createElement("div");
+      row.className = "member-row";
+      row.innerHTML = `<input type="text" class="member-name" placeholder="Player ${count}">`;
+      container.appendChild(row);
+    } else {
+      alert("Maximum 8 players allowed");
+    }
+  };
+
+  // Mobile number validation
+  function setupMobileValidation(inputId) {
+    document.getElementById(inputId).addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/\D/g, '').substring(0, 10);
+    });
+  }
+
+  setupMobileValidation('contactNumber');
+  setupMobileValidation('playerMobile');
+
+  // Payment method toggle functions
+  function setupPaymentToggle(prefix) {
+    const paymentMethodRadios = document.getElementsByName(`${prefix}PaymentMethod`);
+    const onlinePaymentDetails = document.getElementById(`${prefix}OnlinePaymentDetails`);
+    
+    paymentMethodRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.value === 'online') {
+          onlinePaymentDetails.style.display = 'block';
+        } else {
+          onlinePaymentDetails.style.display = 'none';
+        }
+      });
+    });
+
+    // UPI option selection
+    const upiIdOption = document.getElementById(`${prefix}UpiIdOption`);
+    const qrCodeOption = document.getElementById(`${prefix}QrCodeOption`);
+    const upiIdSection = document.getElementById(`${prefix}UpiIdSection`);
+    const qrCodeSection = document.getElementById(`${prefix}QrCodeSection`);
+
+    upiIdOption.addEventListener('click', function() {
+      upiIdOption.classList.add('active');
+      qrCodeOption.classList.remove('active');
+      upiIdSection.style.display = 'block';
+      qrCodeSection.style.display = 'none';
+    });
+
+    qrCodeOption.addEventListener('click', function() {
+      qrCodeOption.classList.add('active');
+      upiIdOption.classList.remove('active');
+      upiIdSection.style.display = 'none';
+      qrCodeSection.style.display = 'block';
+      
+      // Generate QR code when option is selected
+      const amount = getAmountForPrefix(prefix);
+      if (amount) {
+        generateQRCode(prefix, amount);
+      }
+    });
+  }
+
+  // Setup payment toggles for all forms
+  setupPaymentToggle('team');
+  setupPaymentToggle('tournament');
+  setupPaymentToggle('slot');
+
+  // Get amount based on prefix
+  function getAmountForPrefix(prefix) {
+    switch(prefix) {
+      case 'team': return 500;
+      case 'tournament': return 2000;
+      case 'slot': 
+        const duration = document.getElementById('slotDuration').value;
+        const costs = { '1': 400, '2': 700, '3': 900 };
+        return costs[duration] || 400;
+      default: return 0;
+    }
+  }
+
+  // Generate QR Code function
+  function generateQRCode(prefix, amount) {
+    const merchants = ['paytm', 'phonepe', 'gpay', 'bhim'];
+    const randomMerchant = merchants[Math.floor(Math.random() * merchants.length)];
+    const randomNumber = Math.floor(1000000000 + Math.random() * 9000000000);
+    const generatedUpiId = `cricket${randomNumber}@${randomMerchant}`;
+    
+    document.getElementById(`${prefix}GeneratedUpiId`).textContent = `UPI ID: ${generatedUpiId}`;
+    
+    const upiUrl = `upi://pay?pa=${generatedUpiId}&pn=Cricket Booking&am=${amount}&cu=INR&tn=Cricket Booking Payment`;
+    
+    const qr = new QRious({
+      element: document.createElement('canvas'),
+      value: upiUrl,
+      size: 160,
+      background: 'white',
+      foreground: 'black'
+    });
+    
+    const qrContainer = document.getElementById(`${prefix}QrCode`);
+    qrContainer.innerHTML = '';
+    qrContainer.appendChild(qr.canvas);
+  }
+
+  // Slot duration change handler
+  document.getElementById('slotDuration').addEventListener('change', function() {
+    const duration = this.value;
+    const costs = { '1': 400, '2': 700, '3': 900 };
+    const cost = costs[duration] || 400;
+    document.getElementById('slotCost').textContent = `Slot Cost: ₹${cost}`;
+    
+    // Update QR code if QR option is active
+    const qrCodeOption = document.getElementById('slotQrCodeOption');
+    if (qrCodeOption.classList.contains('active')) {
+      generateQRCode('slot', cost);
+      document.getElementById('slotQrText').textContent = `Scan this QR code with any UPI app to pay ₹${cost}`;
+    }
+  });
+
+  // Date validation for tournament
+  document.getElementById('endDate').addEventListener('change', function() {
+    const startDate = document.getElementById('startDate').value;
+    if (startDate && this.value < startDate) {
+      alert('End date cannot be before start date');
+      this.value = startDate;
+    }
+  });
+
+  // Generate booking ID
+  function generateBookingId(prefix) {
+    const prefixes = { 'team': 'TM', 'tournament': 'TR', 'slot': 'SL' };
+    return prefixes[prefix] + Math.floor(100000 + Math.random() * 900000);
+  }
+
+  // Show loading overlay
+  function showLoading() {
+    document.getElementById('loadingOverlay').style.display = 'flex';
+  }
+
+  // Hide loading overlay
+  function hideLoading() {
+    document.getElementById('loadingOverlay').style.display = 'none';
+  }
+
+  // Team Registration Form Submit
+  document.getElementById('teamRegistrationForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const paymentMethod = document.querySelector('input[name="teamPaymentMethod"]:checked').value;
+    
+    if (paymentMethod === 'online') {
+      const upiIdOption = document.getElementById('teamUpiIdOption');
+      if (upiIdOption.classList.contains('active')) {
+        const upiId = document.getElementById('teamUpiId').value;
+        if (!upiId || !upiId.includes('@')) {
+          alert('Please enter a valid UPI ID');
+          return;
+        }
+      }
+    }
+    
+    showLoading();
+    
+    setTimeout(() => {
+      hideLoading();
+      document.getElementById('teamRegistrationForm').style.display = 'none';
+      
+      // Fill confirmation details
+      document.getElementById('teamRegistrationId').textContent = generateBookingId('team');
+      document.getElementById('confirmTeamName').textContent = document.getElementById('teamName').value;
+      document.getElementById('confirmCaptainName').textContent = document.getElementById('captainName').value;
+      document.getElementById('confirmContact').textContent = document.getElementById('contactNumber').value;
+      document.getElementById('confirmTeamPayment').textContent = paymentMethod === 'online' ? 'Online Payment (UPI)' : 'Pay at Venue';
+      
+      document.getElementById('teamBookingConfirmation').style.display = 'block';
+    }, 2000);
+  });
+
+  // Tournament Form Submit
+  document.getElementById('tournamentForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const paymentMethod = document.querySelector('input[name="tournamentPaymentMethod"]:checked').value;
+    
+    if (paymentMethod === 'online') {
+      const upiIdOption = document.getElementById('tournamentUpiIdOption');
+      if (upiIdOption.classList.contains('active')) {
+        const upiId = document.getElementById('tournamentUpiId').value;
+        if (!upiId || !upiId.includes('@')) {
+          alert('Please enter a valid UPI ID');
+          return;
+        }
+      }
+    }
+    
+    showLoading();
+    
+    setTimeout(() => {
+      hideLoading();
+      document.getElementById('tournamentForm').style.display = 'none';
+      
+      // Fill confirmation details
+      document.getElementById('tournamentId').textContent = generateBookingId('tournament');
+      document.getElementById('confirmTournamentName').textContent = document.getElementById('tournamentName').value;
+      document.getElementById('confirmStartDate').textContent = document.getElementById('startDate').value;
+      document.getElementById('confirmEndDate').textContent = document.getElementById('endDate').value;
+      document.getElementById('confirmTeamCount').textContent = document.getElementById('teamCount').value + ' Teams';
+      document.getElementById('confirmEntryFee').textContent = '₹' + document.getElementById('entryFee').value;
+      document.getElementById('confirmTournamentPayment').textContent = paymentMethod === 'online' ? 'Online Payment (UPI)' : 'Pay at Venue';
+      
+      document.getElementById('tournamentBookingConfirmation').style.display = 'block';
+    }, 2000);
+  });
+
+  // Slot Booking Form Submit
+  document.getElementById('bookingForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const paymentMethod = document.querySelector('input[name="slotPaymentMethod"]:checked').value;
+    
+    if (paymentMethod === 'online') {
+      const upiIdOption = document.getElementById('slotUpiIdOption');
+      if (upiIdOption.classList.contains('active')) {
+        const upiId = document.getElementById('slotUpiId').value;
+        if (!upiId || !upiId.includes('@')) {
+          alert('Please enter a valid UPI ID');
+          return;
+        }
+      }
+    }
+    
+    showLoading();
+    
+    setTimeout(() => {
+      hideLoading();
+      document.getElementById('bookingForm').style.display = 'none';
+      
+      // Fill confirmation details
+      const duration = document.getElementById('slotDuration').value;
+      const costs = { '1': 400, '2': 700, '3': 900 };
+      const cost = costs[duration] || 400;
+      
+      document.getElementById('slotBookingId').textContent = generateBookingId('slot');
+      document.getElementById('confirmPlayerName').textContent = document.getElementById('playerName').value;
+      document.getElementById('confirmSlotDate').textContent = document.getElementById('slotDate').value;
+      document.getElementById('confirmSlotTime').textContent = document.getElementById('slotTime').value;
+      document.getElementById('confirmDuration').textContent = duration + (duration === '1' ? ' Hour' : ' Hours');
+      document.getElementById('confirmSlotAmount').textContent = '₹' + cost;
+      document.getElementById('confirmSlotPayment').textContent = paymentMethod === 'online' ? 'Online Payment (UPI)' : 'Pay at Venue';
+      
+      document.getElementById('slotBookingConfirmation').style.display = 'block';
+    }, 2000);
+  });
+});
+
+// Reset form functions
+function resetTeamForm() {
+  document.getElementById('teamRegistrationForm').reset();
+  document.getElementById('teamRegistrationForm').style.display = 'block';
+  document.getElementById('teamBookingConfirmation').style.display = 'none';
+  
+  // Reset team members to 6 players
+  const container = document.getElementById('teamMembers');
+  container.innerHTML = `
+    <div class="member-row"><input type="text" class="member-name" placeholder="Player 1" required></div>
+    <div class="member-row"><input type="text" class="member-name" placeholder="Player 2" required></div>
+    <div class="member-row"><input type="text" class="member-name" placeholder="Player 3" required></div>
+    <div class="member-row"><input type="text" class="member-name" placeholder="Player 4" required></div>
+    <div class="member-row"><input type="text" class="member-name" placeholder="Player 5" required></div>
+    <div class="member-row"><input type="text" class="member-name" placeholder="Player 6" required></div>
+  `;
+  
+  // Reset payment options
+  document.getElementById('teamOnline').checked = true;
+  document.getElementById('teamOnlinePaymentDetails').style.display = 'block';
+  document.getElementById('teamUpiIdOption').classList.add('active');
+  document.getElementById('teamQrCodeOption').classList.remove('active');
+  document.getElementById('teamUpiIdSection').style.display = 'block';
+  document.getElementById('teamQrCodeSection').style.display = 'none';
+}
+
+function resetTournamentForm() {
+  document.getElementById('tournamentForm').reset();
+  document.getElementById('tournamentForm').style.display = 'block';
+  document.getElementById('tournamentBookingConfirmation').style.display = 'none';
+  
+  // Reset payment options
+  document.getElementById('tournamentOnline').checked = true;
+  document.getElementById('tournamentOnlinePaymentDetails').style.display = 'block';
+  document.getElementById('tournamentUpiIdOption').classList.add('active');
+  document.getElementById('tournamentQrCodeOption').classList.remove('active');
+  document.getElementById('tournamentUpiIdSection').style.display = 'block';
+  document.getElementById('tournamentQrCodeSection').style.display = 'none';
+}
+
+function resetSlotForm() {
+  document.getElementById('bookingForm').reset();
+  document.getElementById('bookingForm').style.display = 'block';
+  document.getElementById('slotBookingConfirmation').style.display = 'none';
+  
+  // Reset cost display
+  document.getElementById('slotCost').textContent = 'Slot Cost: ₹400';
+  
+  // Reset payment options
+  document.getElementById('slotOnline').checked = true;
+  document.getElementById('slotOnlinePaymentDetails').style.display = 'block';
+  document.getElementById('slotUpiIdOption').classList.add('active');
+  document.getElementById('slotQrCodeOption').classList.remove('active');
+  document.getElementById('slotUpiIdSection').style.display = 'block';
+  document.getElementById('slotQrCodeSection').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

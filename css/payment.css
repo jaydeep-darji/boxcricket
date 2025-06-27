@@ -1,0 +1,142 @@
+/* Payment Section Styles */
+.payment-section {
+    padding: 80px 0;
+    background-color: var(--light-bg);
+}
+
+.payment-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.payment-form {
+    padding: 40px;
+}
+
+.payment-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.input-box, .select-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box input, .select-box select {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.input-box input:focus, .select-box select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.input-box i, .select-box i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--light-text);
+}
+
+.payment-options, .card-options {
+    margin-bottom: 20px;
+}
+
+.payment-options h3, .card-options h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.payment-method-options, .card-options {
+    display: flex;
+    gap: 20px;
+}
+
+.payment-option, .card-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-expiry-cvv {
+    display: flex;
+    gap: 15px;
+}
+
+.input-box.expiry, .input-box.cvv {
+    flex: 1;
+}
+
+.payment-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Booking Confirmation Styles */
+.booking-confirmation {
+    padding: 40px;
+    text-align: center;
+}
+
+.confirmation-icon {
+    font-size: 80px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.booking-details {
+    margin: 30px 0;
+    text-align: left;
+    padding: 20px;
+    background-color: var(--light-bg);
+    border-radius: 5px;
+}
+
+.booking-details p {
+    margin-bottom: 10px;
+}
+
+.confirmation-message {
+    margin-bottom: 20px;
+    color: var(--light-text);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid var(--primary-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 20px;
+}

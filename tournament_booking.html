@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Box Cricket Tournament Booking</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Optional external CSS -->
+  <style>
+    /* Minimal modal styles */
+    .modal-sch {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .modal-content-sch {
+      background: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+    .form-group-sch {
+      margin-bottom: 15px;
+    }
+    .form-group-sch label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group-sch input,
+    .form-group-sch select,
+    .form-group-sch textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .btn-sch {
+      padding: 10px 20px;
+      background-color: #008cff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .close-sch {
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .member-row {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Box Cricket Tournament Booking System</h1>
+  <button id="registerTeam" class="btn-sch">Register Team</button>
+  <button id="createTournament" class="btn-sch">Create Tournament</button>
+  <button id="bookSlot" class="btn-sch">Book Slot</button>
+
+  <!-- Include Modals Here -->
+
+  <!-- Team Registration Modal -->
+  <div id="teamRegistrationModal" class="modal-sch">
+    <div class="modal-content-sch">
+      <span class="close-registration close-sch">&times;</span>
+      <h3>Register New Team</h3>
+      <form id="teamRegistrationForm">
+        <div class="form-group-sch">
+          <label for="teamName">Team Name</label>
+          <input type="text" id="teamName" required>
+        </div>
+        <div class="form-group-sch">
+          <label for="captainName">Captain Name</label>
+          <input type="text" id="captainName" required>
+        </div>
+        <div class="form-group-sch">
+          <label for="contactNumber">Contact Number</label>
+          <input type="tel" id="contactNumber" required>
+        </div>
+        <div class="form-group-sch">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group-sch">
+          <label>Team Members (6-8 players)</label>
+          <div id="teamMembers">
+            <div class="member-row"><input type="text" class="member-name" placeholder="Player 1" required></div>
+            <div class="member-row"><input type="text" class="member-name" placeholder="Player 2" required></div>
+            <div class="member-row"><input type="text" class="member-name" placeholder="Player 3" required></div>
+            <div class="member-row"><input type="text" class="member-name" placeholder="Player 4" required></div>
+            <div class="member-row"><input type="text" class="member-name" placeholder="Player 5" required></div>
+            <div class="member-row"><input type="text" class="member-name" placeholder="Player 6" required></div>
+          </div>
+          <button type="button" id="addPlayer" class="btn-sch" style="margin-top:10px;">Add Player</button>
+        </div>
+        <button type="submit" class="btn-sch">Register Team</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tournament Modal -->
+  <div id="tournamentModal" class="modal-sch">
+    <div class="modal-content-sch">
+      <span class="close-tournament close-sch">&times;</span>
+      <h3>Create Tournament</h3>
+      <form id="tournamentForm">
+        <div class="form-group-sch">
+          <label for="tournamentName">Tournament Name</label>
+          <input type="text" id="tournamentName" required>
+        </div>
+        <div class="form-group-sch">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" required>
+        </div>
+        <div class="form-group-sch">
+          <label for="endDate">End Date</label>
+          <input type="date" id="endDate" required>
+        </div>
+        <div class="form-group-sch">
+          <label for="teamCount">Number of Teams</label>
+          <select id="teamCount" required>
+            <option value="">Select</option>
+            <option value="4">4 Teams</option>
+            <option value="8">8 Teams</option>
+            <option value="16">16 Teams</option>
+          </select>
+        </div>
+        <div class="form-group-sch">
+          <label for="entryFee">Entry Fee (₹)</label>
+          <input type="number" id="entryFee" required>
+        </div>
+        <div class="form-group-sch">
+          <label for="tournamentRules">Tournament Rules</label>
+          <textarea id="tournamentRules" rows="4" placeholder="Rules and regulations..."></textarea>
+        </div>
+        <button type="submit" class="btn-sch">Create Tournament</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal-sch">
+    <div class="modal-content-sch">
+      <span class="close-sch">&times;</span>
+      <h3 id="modalTitle">Book a Slot</h3>
+      <form id="bookingForm">
+        <div class="form-group-sch">
+          <label for="slotDate">Date</label>
+          <input type="text" id="slotDate" readonly value="Monday, March 17">
+        </div>
+        <div class="form-group-sch">
+          <label for="slotTime">Time</label>
+          <input type="text" id="slotTime" readonly value="10:00 AM - 11:00 AM">
+        </div>
+        <div class="form-group-sch">
+          <label for="teamSelect">Your Team</label>
+          <select id="teamSelect" required>
+            <option value="">Select Team</option>
+          </select>
+        </div>
+        <div class="form-group-sch">
+          <label for="opponents">Opponent (optional)</label>
+          <input type="text" id="opponents" placeholder="Opponent team name">
+        </div>
+        <div class="form-group-sch">
+          <label for="slotDuration">Duration</label>
+          <select id="slotDuration">
+            <option value="1">1 Hour - ₹400</option>
+            <option value="2">2 Hours - ₹700</option>
+            <option value="3">3 Hours - ₹900</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-sch">Book Slot</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="booking.js"></script> <!-- Optional external JS -->
+  <script>
+    // Basic toggle logic for modals
+    document.getElementById("registerTeam").onclick = () =>
+      document.getElementById("teamRegistrationModal").style.display = "block";
+
+    document.getElementById("createTournament").onclick = () =>
+      document.getElementById("tournamentModal").style.display = "block";
+
+    document.getElementById("bookSlot").onclick = () =>
+      document.getElementById("bookingModal").style.display = "block";
+
+    document.querySelectorAll(".close-sch").forEach(btn =>
+      btn.onclick = () => btn.closest(".modal-sch").style.display = "none"
+    );
+
+    document.getElementById("addPlayer").onclick = () => {
+      const container = document.getElementById("teamMembers");
+      const count = container.children.length + 1;
+      if (count <= 8) {
+        const row = document.createElement("div");
+        row.className = "member-row";
+        row.innerHTML = `<input type="text" class="member-name" placeholder="Player ${count}">`;
+        container.appendChild(row);
+      } else {
+        alert("Maximum 8 players allowed");
+      }
+    };
+  </script>
+</body>
+</html>

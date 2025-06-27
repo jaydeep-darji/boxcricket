@@ -1,0 +1,338 @@
+<?php
+// Your PHP code here
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flipkart Shopping Items</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f1f3f6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 15px 20px;
+      background-color: #2874f0;
+      border-radius: 8px;
+    }
+    
+    .header h1 {
+      color: white;
+      font-size: 28px;
+    }
+    
+    .nav-menu {
+      display: flex;
+      list-style: none;
+    }
+    
+    .nav-item {
+      margin-left: 20px;
+    }
+    
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    #menu-close-button {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    
+    .photo-box {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      aspect-ratio: 1/1;
+      background-color: white;
+    }
+    
+    .photo-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .photo {
+      width: 100%;
+      height: 80%;
+      object-fit: contain;
+      padding: 10px;
+    }
+    
+    .product-info {
+      padding: 10px;
+      text-align: center;
+    }
+    
+    .product-title {
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .price {
+      color: #388e3c;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .actions {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .photo-box:hover .actions {
+      transform: translateY(0);
+    }
+    
+    .buy-now {
+      display: block;
+      width: 100%;
+      background-color: #fb641b;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .buy-now:hover {
+      background-color: #e65c00;
+    }
+    
+    @media (max-width: 1024px) {
+      .photo-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .photo-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: 100vh;
+        background-color: #2874f0;
+        flex-direction: column;
+        padding: 50px 20px;
+        transition: right 0.3s;
+        z-index: 1000;
+      }
+      .nav-menu.active {
+        right: 0;
+      }
+      .nav-item {
+        margin: 15px 0;
+      }
+      #menu-close-button {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+      }
+      .menu-toggle {
+        display: block;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .photo-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Flipkart Shopping Items</h1>
+      <ul class="nav-menu">
+        <button id="menu-close-button" class="fas fa-times"></button>
+        <li class="nav-item">
+          <a href="index.php" class="nav-link">Home</a>
+        </li>
+      </ul>
+      
+    </div>
+    
+    <div class="photo-grid">
+      <!-- Item 1 -->
+      <div class="photo-box">
+        <img src="flipkart photo/bat.png" alt="Cricket Bat" class="photo">
+        <div class="product-info">
+          <div class="product-title">Professional Cricket Bat</div>  
+        </div>
+        <div class="actions">
+          <a href="https://www.flipkart.com/shopeleven-plastic-cricket-bat-tennis-balls-full-size-lime-color-pvc-plastic-8-yrs/p/itm8e8023dd07cbf?pid=BATGHWV8JYFGMYDJ&lid=LSTBATGHWV8JYFGMYDJA2M1XK&marketplace=FLIPKART&q=Professional+Cricket+Bat&store=abc%2F5lf%2Fp8v&srno=s_1_2&otracker=search&otracker1=search&fm=organic&iid=en_eBu2OyPruRW9g4Fkj9bMfMZhTpXguHifIeluDdHVJ_uYyGO3e0XNQ5SxQTPLdSdCUyhtgS9dU10BQWSiZlocLQ%3D%3D&ppt=hp&ppn=homepage&ssid=8ygxrao82o0000001744121350196&qH=996d4d21c6aef27e" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+      
+      <!-- Item 2 -->
+      <div class="photo-box">
+        <img src="flipkart photo/ball.png" alt="Cricket Ball" class="photo">
+        <div class="product-info">
+          <div class="product-title">Leather Cricket Ball</div>
+        </div>
+        <div class="actions">
+          <a href="http://flipkart.com/victory-cricket-tennis-balls-heavy-weight-high-bounce-ball/p/itma2ea2eda3c39e?pid=BALH38YFJFTTTHDA&lid=LSTBALH38YFJFTTTHDAGHESBH&marketplace=FLIPKART&q=cricket+ball&store=abc%2F5lf%2Fyjg&srno=s_1_34&otracker=search&otracker1=search&fm=Search&iid=384fd24e-8002-48ac-86bf-c773cc57b6fe.BALH38YFJFTTTHDA.SEARCH&ppt=sp&ppn=sp&ssid=7x36kvd5uo0000001744122017762&qH=3a913225def33367" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+      
+      <!-- Item 3 -->
+      <div class="photo-box">
+        <img src="flipkart photo/stump.png" alt="Cricket Stumps" class="photo">
+        <div class="product-info">
+          <div class="product-title">Professional Cricket Stumps</div>  
+        </div>
+        <div class="actions">
+          <a href="https://www.flipkart.com/knk-plastic-wickets-cricket-stump/p/itm79f5fea651d64?pid=WKTGEHPFKRJF7GGD&lid=LSTWKTGEHPFKRJF7GGDIJ1NI7&marketplace=FLIPKART&q=Professional+Cricket+Stumps&store=abc%2F5lf%2Fgj5&srno=s_1_34&otracker=search&otracker1=search&fm=Search&iid=2d49acd7-6c23-43f7-b8a3-d74849237eb9.WKTGEHPFKRJF7GGD.SEARCH&ppt=pp&ppn=pp&ssid=twlfbto6gw0000001744122537818&qH=8dcddb3f2810660e" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+      
+      <!-- Item 4 -->
+      <div class="photo-box">
+        <img src="flipkart photo/corns.png" alt="Training Cones" class="photo">
+        <div class="product-info">
+          <div class="product-title">Training Cones Set</div>  
+        </div>
+        <div class="actions">
+          <a href="https://www.flipkart.com/sportstrend-cone-marker-pack-1/p/itm589f3faa34090?pid=SMRH8G6MBBCSVJFK&lid=LSTSMRH8G6MBBCSVJFKVB8GGP&marketplace=FLIPKART&q=Training+Cones+Set&store=abc&srno=s_1_24&otracker=search&otracker1=search&fm=Search&iid=e2ff8e30-e95d-41d8-8088-62e1f9c4e5cd.SMRH8G6MBBCSVJFK.SEARCH&ppt=sp&ppn=sp&ssid=sde06as1bk0000001744122812478&qH=835b4ff16f53b777" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+
+      <!-- Item 5 -->
+      <div class="photo-box">
+        <img src="flipkart photo/jersey.png" alt="Cricket Jersey" class="photo">
+        <div class="product-info">
+          <div class="product-title">Premium Cricket Jersey</div>
+        </div>
+        <div class="actions">
+          <a href="https://www.flipkart.com/caligostle-solid-men-polo-neck-white-t-shirt/p/itm5bb6c7ffc148f?pid=TSHGMRHZBQ4DQTDB&lid=LSTTSHGMRHZBQ4DQTDBFBOCG6&marketplace=FLIPKART&q=Premium+Cricket+Jersey&store=clo%2Fash%2Fank&srno=s_1_8&otracker=search&otracker1=search&fm=Search&iid=037a8f6c-e8bb-4d90-9e24-8833264e7fc2.TSHGMRHZBQ4DQTDB.SEARCH&ppt=sp&ppn=sp&qH=5d92b1fefb44db2b" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+      
+      <!-- Item 6 -->
+      <div class="photo-box">
+        <img src="flipkart photo/kit.png" alt="Cricket Kit Bag" class="photo">
+        <div class="product-info">
+          <div class="product-title">Premium Cricket Kit Bag</div>
+        </div>
+        <div class="actions">
+          <a href="https://www.flipkart.com/shrey-kare-duffle/p/itm615fd41f589a6?pid=SPBGDEAHJVQTB32Z&lid=LSTSPBGDEAHJVQTB32ZDSLXLX&marketplace=FLIPKART&q=Premium+Cricket+Kit+Bag&store=abc%2F5lf%2Fkds&srno=s_1_32&otracker=search&otracker1=search&fm=Search&iid=d3ba4983-f50a-4657-aa7b-cf6973cb9c30.SPBGDEAHJVQTB32Z.SEARCH&ppt=pp&ppn=pp&ssid=c8lacpplkg0000001744123134348&qH=725a56916d074cb3" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+      
+      <!-- Item 7 -->
+      <div class="photo-box">
+        <img src="flipkart photo/hat.png" alt="Cricket Sun Hat" class="photo">
+        <div class="product-info">
+          <div class="product-title">Cricket Sun Hat</div>
+        </div>
+        <div class="actions">
+          <a href="https://www.flipkart.com/ps-pilot-cricket-panama-hat/p/itm09c87cc67a279?pid=HATGY2QBQBVQRHAW&lid=LSTHATGY2QBQBVQRHAWIXJKWU&marketplace=FLIPKART&q=Cricket+Sun+Hat&store=search.flipkart.com&srno=s_1_5&otracker=search&otracker1=search&fm=Search&iid=bdefd453-b5a8-40e0-a3e9-104bc6cbd221.HATGY2QBQBVQRHAW.SEARCH&ppt=sp&ppn=sp&ssid=c1n52w5qb40000001744123232439&qH=fc91d8d24b132ee4" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+      
+      <!-- Item 8 -->
+      <div class="photo-box">
+        <img src="flipkart photo/net.png" alt="Cricket Practice Net" class="photo">
+        <div class="product-info">
+          <div class="product-title">Cricket Practice Net</div>
+        </div>
+        <div class="actions">
+          <a href="https://www.flipkart.com/royalnetcenter-50x10-feet-cricket-practice-boundary-safety-net/p/itm384634a7ae71a?pid=NETGNZGZE9PGRY7F&lid=LSTNETGNZGZE9PGRY7FNVJP3M&marketplace=FLIPKART&q=Cricket+Practice+Net&store=abc%2F5lf%2Fzgv&spotlightTagId=default_BestsellerId_abc%2F5lf%2Fzgv&srno=s_1_4&otracker=search&otracker1=search&fm=Search&iid=fcaf68e4-0b88-4b95-96ec-d6e3c4891285.NETGNZGZE9PGRY7F.SEARCH&ppt=sp&ppn=sp&ssid=ctc2lx56c00000001744123392391&qH=e284c597f3e59746" class="buy-now">BUY NOW</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for mobile menu toggle -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const navMenu = document.querySelector('.nav-menu');
+      const closeButton = document.querySelector('#menu-close-button');
+      
+      if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+          navMenu.classList.add('active');
+        });
+      }
+      
+      if (closeButton) {
+        closeButton.addEventListener('click', function() {
+          navMenu.classList.remove('active');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

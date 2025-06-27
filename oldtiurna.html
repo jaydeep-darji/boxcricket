@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team Booking Payment</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f9f8;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2f855a;
+      margin-bottom: 20px;
+    }
+
+    .input-box {
+      margin-bottom: 15px;
+    }
+
+    .input-box input,
+    .input-box select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .payment-title {
+      text-align: center;
+      font-weight: 600;
+      font-size: 18px;
+      margin: 20px 0 10px;
+      color: #333;
+    }
+
+    .radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 15px;
+    }
+
+    .radio-group input {
+      margin-right: 5px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tab-buttons button {
+      flex: 1;
+      padding: 10px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+
+    .tab-buttons button.active {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .tab-buttons button:not(.active) {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .upi-input {
+      display: none;
+    }
+
+    .upi-input input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+    .qr-placeholder {
+      display: none;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .qr-placeholder img {
+      width: 180px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .confirm-button {
+      background-color: #28a745;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .confirm-button:hover {
+      background-color: #218838;
+    }
+
+    @media (max-width: 600px) {
+      .tab-buttons {
+        flex-direction: column;
+      }
+
+      .tab-buttons button {
+        width: 100%;
+      }
+
+      .confirm-button {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Team Booking Form</h2>
+
+    <div class="input-box">
+      <input type="text" placeholder="Team Name" required>
+    </div>
+    <div class="input-box">
+      <input type="text" placeholder="Captain Name" required>
+    </div>
+    <div class="input-box">
+      <input type="tel" placeholder="Mobile Number" pattern="[0-9]{10}" required>
+    </div>
+    <div class="input-box">
+      <input type="email" placeholder="Email" required>
+    </div>
+    <div class="input-box">
+      <select>
+        <option value="">Select Duration</option>
+        <option value="1">1 Hour</option>
+        <option value="2">2 Hours</option>
+      </select>
+    </div>
+    <div class="input-box">
+      <select>
+        <option value="">Select Time Slot</option>
+        <option value="8-9am">8-9 AM</option>
+        <option value="9-10am">9-10 AM</option>
+      </select>
+    </div>
+    <div class="input-box">
+      <input type="text" placeholder="Total Amount" readonly value="₹1000">
+    </div>
+
+    <div class="payment-title">Payment Method</div>
+    <div class="radio-group">
+      <label><input type="radio" name="payment" value="online" checked> Online Payment</label>
+      <label><input type="radio" name="payment" value="offline"> Pay at Venue</label>
+    </div>
+
+    <div id="onlinePaymentOptions">
+      <div class="tab-buttons">
+        <button type="button" id="btnUPI" class="active">UPI ID</button>
+        <button type="button" id="btnQR">QR Code</button>
+      </div>
+
+      <div class="upi-input" id="upiInput" style="display:block;">
+        <input type="text" placeholder="Enter UPI ID (example@upi)">
+      </div>
+
+      <div class="qr-placeholder" id="qrPlaceholder">
+        <img src="https://via.placeholder.com/180x180.png?text=Scan+QR" alt="QR Code">
+      </div>
+    </div>
+
+    <button class="confirm-button">Confirm Booking</button>
+  </div>
+
+  <script>
+    const radioButtons = document.getElementsByName("payment");
+    const onlineOptions = document.getElementById("onlinePaymentOptions");
+    const btnUPI = document.getElementById("btnUPI");
+    const btnQR = document.getElementById("btnQR");
+    const upiInput = document.getElementById("upiInput");
+    const qrPlaceholder = document.getElementById("qrPlaceholder");
+
+    radioButtons.forEach(radio => {
+      radio.addEventListener("change", () => {
+        if (radio.value === "online" && radio.checked) {
+          onlineOptions.style.display = "block";
+        } else {
+          onlineOptions.style.display = "none";
+        }
+      });
+    });
+
+    btnUPI.addEventListener("click", () => {
+      btnUPI.classList.add("active");
+      btnQR.classList.remove("active");
+      upiInput.style.display = "block";
+      qrPlaceholder.style.display = "none";
+    });
+
+    btnQR.addEventListener("click", () => {
+      btnQR.classList.add("active");
+      btnUPI.classList.remove("active");
+      upiInput.style.display = "none";
+      qrPlaceholder.style.display = "block";
+    });
+  </script>
+
+</body>
+</html>

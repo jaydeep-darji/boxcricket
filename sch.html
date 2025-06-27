@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7 STAR BOX CRICKET</title>
+    <!-- linking font awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/live.css">
+</head>
+<body-sch>
+    <section class="sched" id="schedule">
+        <div class="container-sch" >
+        <div class="sche">
+            <h1-m >Box Cricket Tournament</h1-m><br><br>
+            <p style=" font-size: 20px;font-weight: 300;">Book your slots and manage your teams in real-time</p>
+        </div>
+        
+        <div class="sche-list">
+            <ul>
+            <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#schedule">Schedule</a></li>
+                    <li><a href="#Service">Services</a></li>
+            </ul>
+        </div>
+        
+        <div class="dashboard-sch">
+            <div class="sidebar-sch">
+                <h3>Filters</h3>
+                <div class="filters-sch">
+                    <div class="filter-group-sch">
+                        <label for="venue">Venue</label>
+                        <select id="venue">
+                            <option value="">All Venues</option>
+                            <option value="venue1">Cricket Box Alpha</option>
+                            <option value="venue2">Cricket Box Beta</option>
+                            <option value="venue3">Cricket Box Gamma</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group-sch">
+                        <label for="date">Date</label>
+                        <input type="date" id="date">
+                    </div>
+                    
+                    <div class="filter-group-sch">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="">All Statuses</option>
+                            <option value="available">Available</option>
+                            <option value="booked">Booked</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-sch" id="applyFilters">Apply Filters</button>
+                </div>
+                
+                <div class="team-registration-sch">
+                    <h3>Quick Actions</h3>
+                    <button class="btn-sch" id="registerTeam">Register New Team</button>
+                    <button class="btn btn-accent-sch" id="createTournament">Create Tournament</button>
+                </div>
+            </div>
+            
+            <div class="schedule-container">
+                <div class="live-indicator">
+                    <div class="pulse"></div>
+                    Live Schedule Updates
+                </div>
+                
+                <div class="status-indicator-sch">
+                    <div class="status-item-sch">
+                        <div class="status-color-sch" style="background-color: var(--available-color)"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="status-item-sch">
+                        <div class="status-color-sch" style="background-color: var(--booked-color)"></div>
+                        <span>Booked</span>
+                    </div>
+                    <div class="status-item-sch">
+                        <div class="status-color-sch" style="background-color: var(--pending-color)"></div>
+                        <span>Pending</span>
+                    </div>
+                </div>
+                
+                <div class="date-navigation-sch">
+                    <button class="btn-sch" id="prevWeek">Previous Week</button>
+                    <h3 id="currentWeek">March 10 - 16, 2025</h3>
+                    <button class="btn-sch" id="nextWeek">Next Week</button>
+                </div>
+                
+                <div class="schedule-header-sch">
+                    <div class="time-column">Time</div>
+                    <div class="day-column">Mon</div>
+                    <div class="day-column">Tue</div>
+                    <div class="day-column">Wed</div>
+                    <div class="day-column">Thu</div>
+                    <div class="day-column">Fri</div>
+                    <div class="day-column">Sat</div>
+                    <div class="day-column">Sun</div>
+                </div>
+                
+                <div class="schedule-grid-sch">
+                    <div class="time-slots-sch" id="timeSlots">
+                        <!-- Time slots will be generated by JavaScript -->
+                    </div>
+                    
+                    <div class="day-slots-sch" id="daySlots">
+                        <!-- Slots will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal-sch">
+        <div class="modal-content-sch">
+            <span class="close-sch">&times;</span>
+            <h3 id="modalTitle">Book a Slot</h3>
+            <form id="bookingForm">
+                <div class="form-group-sch">
+                    <label for="slotDate">Date</label>
+                    <input type="text" id="slotDate" readonly>
+                </div>
+                <div class="form-group-sch">
+                    <label for="slotTime">Time</label>
+                    <input type="text" id="slotTime" readonly>
+                </div>
+                <div class="form-group-sch">
+                    <label for="teamSelect">Select Team</label>
+                    <select id="teamSelect">
+                        <option value="">Select your team</option>
+                        <option value="team1">Thunderbolts</option>
+                        <option value="team2">Strikers</option>
+                        <option value="team3">Royal Challengers</option>
+                    </select>
+                </div>
+                <div class="form-group-sch">
+                    <label for="opponents">Opponents</label>
+                    <select id="opponents">
+                        <option value="">Open Challenge (Anyone can accept)</option>
+                        <option value="team1">Thunderbolts</option>
+                        <option value="team2">Strikers</option>
+                        <option value="team3">Royal Challengers</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-sch">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-sch">Slot booked successfully!</div>
+    
+  
+
+<script src="./js/booking-script.js"></script>
+<script src="./js/sch.js"></script>
+<script src="./js/script.js"></script>
+</body>
+</html>
+
+
+
+
+const timeSlots = {
+    '1': ['6:00 AM - 7:00 AM', '7:00 AM - 8:00 AM', '8:00 AM - 9:00 AM', '5:00 PM - 6:00 PM', '6:00 PM - 7:00 PM', '7:00 PM - 8:00 PM', '8:00 PM - 9:00 PM', '9:00 PM - 10:00 PM'],
+    '2': ['6:00 AM - 8:00 AM', '8:00 AM - 10:00 AM', '5:00 PM - 7:00 PM', '7:00 PM - 9:00 PM', '8:00 PM - 10:00 PM'],
+    '3': ['6:00 AM - 9:00 AM', '5:00 PM - 8:00 PM', '7:00 PM - 10:00 PM']
+};
+
+const prices = {
+    '1': 400,
+    '2': 700,
+    '3': 900
+};

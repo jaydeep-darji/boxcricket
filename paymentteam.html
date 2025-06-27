@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team Booking Payment</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h2 {
+      color: #2f855a;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .header p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .form-section {
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .input-group input:invalid {
+      border-color: #ef4444;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .payment-method {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .payment-method input {
+      margin-right: 8px;
+      transform: scale(1.2);
+    }
+
+    .payment-method.active {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .payment-method:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+    }
+
+    .online-payment-section {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .payment-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      background-color: #f1f5f9;
+      color: #64748b;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .qr-placeholder {
+      text-align: center;
+      padding: 40px 20px;
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .qr-placeholder img {
+      width: 150px;
+      height: 150px;
+      opacity: 0.7;
+    }
+
+    .confirm-button {
+      width: 100%;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .confirm-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .confirm-button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .loading-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 300px;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .success-message, .error-message {
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: center;
+      font-weight: 500;
+      display: none;
+    }
+
+    .success-message {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .error-message {
+      background: linear-gradient(135deg, #fee2e2 0%, #fca5a5 100%);
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .booking-summary {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #667eea;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .summary-item:last-child {
+      margin-bottom: 0;
+      font-weight: 600;
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px auto;
+        padding: 20px;
+      }
+
+      .header h2 {
+        font-size: 24px;
+      }
+
+      .payment-methods {
+        flex-direction: column;
+      }
+
+      .payment-tabs {
+        flex-direction: column;
+      }
+
+      .summary-item {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+
+      .container {
+        padding: 15px;
+        margin: 5px auto;
+      }
+
+      .header h2 {
+        font-size: 22px;
+      }
+
+      .input-group input,
+      .input-group select {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .confirm-button {
+        padding: 12px;
+        font-size: 16px;
+      }
+    }
+
+    /* Hide number input spinners */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    .form-step {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .confirmation-section {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .confirmation-section h3 {
+      color: #10b981;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .booking-details {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .booking-details h4 {
+      color: #334155;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+      font-weight: 600;
+    }
+
+    .booking-id {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>🏏 Team Booking Form</h2>
+      <p>Book your cricket slot easily and securely</p>
+    </div>
+
+    <form id="bookingForm">
+      <div class="form-section">
+        <div class="section-title">Team Information</div>
+        <div class="input-group">
+          <input type="text" id="teamName" placeholder="Team Name" required>
+        </div>
+        <div class="input-group">
+          <input type="text" id="captainName" placeholder="Captain Name" required>
+        </div>
+        <div class="input-group">
+          <input type="tel" id="mobileNumber" placeholder="Mobile Number (10 digits)" pattern="[0-9]{10}" required>
+        </div>
+        <div class="input-group">
+          <input type="email" id="email" placeholder="Email Address" required>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">Booking Details</div>
+        <div class="input-group">
+          <select id="duration" required>
+            <option value="">Select Duration</option>
+            <option value="1">1 Hour - ₹400</option>
+            <option value="2">2 Hours - ₹700</option>
+            <option value="3">3 Hours - ₹900</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <select id="timeSlot" required>
+            <option value="">Select Time Slot</option>
+          </select>
+        </div>
+        
+        <div class="booking-summary" id="bookingSummary" style="display: none;">
+          <div class="summary-item">
+            <span>Duration:</span>
+            <span id="summaryDuration">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Time Slot:</span>
+            <span id="summaryTime">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Total Amount:</span>
+            <span id="summaryAmount">₹0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">Payment Method</div>
+        <div class="payment-methods">
+          <label class="payment-method active" id="onlinePaymentLabel">
+            <input type="radio" name="payment" value="online" checked>
+            Online Payment
+          </label>
+          <label class="payment-method" id="offlinePaymentLabel">
+            <input type="radio" name="payment" value="offline">
+            Pay at Venue
+          </label>
+        </div>
+
+        <div class="online-payment-section" id="onlinePaymentSection">
+          <div class="payment-tabs">
+            <button type="button" class="tab-button active" id="upiTab">UPI ID</button>
+            <button type="button" class="tab-button" id="qrTab">QR Code</button>
+          </div>
+
+          <div class="tab-content active" id="upiContent">
+            <div class="input-group">
+              <input type="text" id="upiId" placeholder="Enter UPI ID (example@paytm)">
+            </div>
+          </div>
+
+          <div class="tab-content" id="qrContent">
+            <div class="qr-placeholder">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 24 24'%3E%3Cpath fill='%2364748b' d='M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM19 13h2v2h-2zM13 13h2v2h-2zM15 15h2v2h-2zM13 17h2v2h-2zM15 19h2v2h-2zM17 17h2v2h-2zM17 13h2v2h-2zM19 15h2v2h-2z'/%3E%3C/svg%3E" alt="QR Code">
+              <p style="margin-top: 10px; color: #64748b;">Scan QR Code to Pay</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-message" id="successMessage"></div>
+      <div class="error-message" id="errorMessage"></div>
+
+      <button type="submit" class="confirm-button" id="confirmButton">
+        🎯 Confirm Booking
+      </button>
+    </form>
+
+    <div class="confirmation-section" id="confirmationSection">
+      <h3>🎉 Booking Confirmed!</h3>
+      <div class="booking-id" id="bookingIdDisplay"></div>
+      <div class="booking-details">
+        <h4>Booking Details</h4>
+        <div class="detail-row">
+          <span>Team Name:</span>
+          <span id="confirmTeamName"></span>
+        </div>
+        <div class="detail-row">
+          <span>Captain:</span>
+          <span id="confirmCaptainName"></span>
+        </div>
+        <div class="detail-row">
+          <span>Mobile:</span>
+          <span id="confirmMobile"></span>
+        </div>
+        <div class="detail-row">
+          <span>Duration:</span>
+          <span id="confirmDuration"></span>
+        </div>
+        <div class="detail-row">
+          <span>Time Slot:</span>
+          <span id="confirmTimeSlot"></span>
+        </div>
+        <div class="detail-row">
+          <span>Payment Method:</span>
+          <span id="confirmPaymentMethod"></span>
+        </div>
+        <div class="detail-row">
+          <span>Total Amount:</span>
+          <span id="confirmAmount"></span>
+        </div>
+      </div>
+      <button type="button" class="confirm-button" onclick="location.reload()">
+        Book Another Slot
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p>Processing your booking...</p>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const form = document.getElementById('bookingForm');
+    const durationSelect = document.getElementById('duration');
+    const timeSlotSelect = document.getElementById('timeSlot');
+    const bookingSummary = document.getElementById('bookingSummary');
+    const onlinePaymentSection = document.getElementById('onlinePaymentSection');
+    const upiTab = document.getElementById('upiTab');
+    const qrTab = document.getElementById('qrTab');
+    const upiContent = document.getElementById('upiContent');
+    const qrContent = document.getElementById('qrContent');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const confirmationSection = document.getElementById('confirmationSection');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Data
+    const timeSlots = {
+      '1': [
+        '6:00 AM - 7:00 AM', '7:00 AM - 8:00 AM', '8:00 AM - 9:00 AM',
+        '5:00 PM - 6:00 PM', '6:00 PM - 7:00 PM', '7:00 PM - 8:00 PM',
+        '8:00 PM - 9:00 PM', '9:00 PM - 10:00 PM'
+      ],
+      '2': [
+        '6:00 AM - 8:00 AM', '8:00 AM - 10:00 AM',
+        '5:00 PM - 7:00 PM', '7:00 PM - 9:00 PM', '8:00 PM - 10:00 PM'
+      ],
+      '3': [
+        '6:00 AM - 9:00 AM', '5:00 PM - 8:00 PM', '7:00 PM - 10:00 PM'
+      ]
+    };
+
+    const prices = {
+      '1': 400,
+      '2': 700,
+      '3': 900
+    };
+
+    const durationTexts = {
+      '1': '1 Hour',
+      '2': '2 Hours',
+      '3': '3 Hours'
+    };
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      setupEventListeners();
+    });
+
+    function setupEventListeners() {
+      // Duration change
+      durationSelect.addEventListener('change', handleDurationChange);
+      
+      // Time slot change
+      timeSlotSelect.addEventListener('change', updateBookingSummary);
+      
+      // Payment method change
+      document.querySelectorAll('input[name="payment"]').forEach(radio => {
+        radio.addEventListener('change', handlePaymentMethodChange);
+      });
+      
+      // Payment method labels
+      document.getElementById('onlinePaymentLabel').addEventListener('click', () => {
+        document.querySelector('input[value="online"]').checked = true;
+        handlePaymentMethodChange();
+      });
+      
+      document.getElementById('offlinePaymentLabel').addEventListener('click', () => {
+        document.querySelector('input[value="offline"]').checked = true;
+        handlePaymentMethodChange();
+      });
+      
+      // UPI/QR tabs
+      upiTab.addEventListener('click', () => switchPaymentTab('upi'));
+      qrTab.addEventListener('click', () => switchPaymentTab('qr'));
+      
+      // Mobile number validation
+      document.getElementById('mobileNumber').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+      });
+      
+      // Form submission
+      form.addEventListener('submit', handleFormSubmission);
+    }
+
+    function handleDurationChange() {
+      const duration = durationSelect.value;
+      
+      // Clear time slots
+      timeSlotSelect.innerHTML = '<option value="">Select Time Slot</option>';
+      
+      if (duration && timeSlots[duration]) {
+        // Populate time slots
+        timeSlots[duration].forEach(slot => {
+          const option = document.createElement('option');
+          option.value = slot;
+          option.textContent = slot;
+          timeSlotSelect.appendChild(option);
+        });
+      }
+      
+      updateBookingSummary();
+    }
+
+    function updateBookingSummary() {
+      const duration = durationSelect.value;
+      const timeSlot = timeSlotSelect.value;
+      
+      if (duration && timeSlot) {
+        document.getElementById('summaryDuration').textContent = durationTexts[duration];
+        document.getElementById('summaryTime').textContent = timeSlot;
+        document.getElementById('summaryAmount').textContent = `₹${prices[duration]}`;
+        bookingSummary.style.display = 'block';
+      } else {
+        bookingSummary.style.display = 'none';
+      }
+    }
+
+    function handlePaymentMethodChange() {
+      const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+      
+      // Update label styles
+      document.querySelectorAll('.payment-method').forEach(label => {
+        label.classList.remove('active');
+      });
+      
+      if (selectedPayment === 'online') {
+        document.getElementById('onlinePaymentLabel').classList.add('active');
+        onlinePaymentSection.style.display = 'block';
+      } else {
+        document.getElementById('offlinePaymentLabel').classList.add('active');
+        onlinePaymentSection.style.display = 'none';
+      }
+    }
+
+    function switchPaymentTab(tab) {
+      // Update tab buttons
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      if (tab === 'upi') {
+        upiTab.classList.add('active');
+        upiContent.classList.add('active');
+      } else {
+        qrTab.classList.add('active');
+        qrContent.classList.add('active');
+      }
+    }
+
+    function handleFormSubmission(e) {
+      e.preventDefault();
+      
+      // Hide previous messages
+      successMessage.style.display = 'none';
+      errorMessage.style.display = 'none';
+      
+      // Validate form
+      if (!validateForm()) {
+        return;
+      }
+      
+      // Show loading
+      loadingOverlay.style.display = 'flex';
+      
+      // Collect form data
+      const formData = collectFormData();
+      
+      // Simulate booking process
+      setTimeout(() => {
+        processBooking(formData);
+      }, 2000);
+    }
+
+    function validateForm() {
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+      
+      if (paymentMethod === 'online') {
+        const activeTab = document.querySelector('.tab-button.active').id;
+        if (activeTab === 'upiTab') {
+          const upiId = document.getElementById('upiId').value.trim();
+          if (!upiId) {
+            showError('Please enter your UPI ID for online payment.');
+            return false;
+          }
+          if (!isValidUPI(upiId)) {
+            showError('Please enter a valid UPI ID (e.g., example@paytm).');
+            return false;
+          }
+        }
+      }
+      
+      return true;
+    }
+
+    function isValidUPI(upiId) {
+      const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+      return upiRegex.test(upiId);
+    }
+
+    function collectFormData() {
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+      const duration = parseInt(durationSelect.value);
+      
+      const formData = {
+        teamName: document.getElementById('teamName').value.trim(),
+        captainName: document.getElementById('captainName').value.trim(),
+        mobileNumber: document.getElementById('mobileNumber').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        duration: duration,
+        timeSlot: timeSlotSelect.value,
+        totalAmount: prices[duration],
+        paymentMethod: paymentMethod,
+        upiId: paymentMethod === 'online' ? document.getElementById('upiId').value.trim() : null
+      };
+      
+      return formData;
+    }
+
+    function processBooking(formData) {
+      loadingOverlay.style.display = 'none';
+      
+      // Generate booking ID
+      const bookingId = 'BCT' + Math.floor(100000 + Math.random() * 900000);
+      
+      // Show confirmation
+      showConfirmation(formData, bookingId);
+    }
+
+    function showConfirmation(formData, bookingId) {
+      // Hide form
+      form.style.display = 'none';
+      
+      // Populate confirmation details
+      document.getElementById('bookingIdDisplay').textContent = `Booking ID: ${bookingId}`;
+      document.getElementById('confirmTeamName').textContent = formData.teamName;
+      document.getElementById('confirmCaptainName').textContent = formData.captainName;
+      document.getElementById('confirmMobile').textContent = formData.mobileNumber;
+      document.getElementById('confirmDuration').textContent = durationTexts[formData.duration];
+      document.getElementById('confirmTimeSlot').textContent = formData.timeSlot;
+      document.getElementById('confirmPaymentMethod').textContent = 
+        formData.paymentMethod === 'online' ? 'Online Payment (UPI)' : 'Pay at Venue';
+      document.getElementById('confirmAmount').textContent = `₹${formData.totalAmount}`;
+      
+      // Show confirmation section
+      confirmationSection.style.display = 'block';
+    }
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      setTimeout(() => {
+        errorMessage.style.display = 'none';
+      }, 5000);
+    }
+
+    function showSuccess(message) {
+      successMessage.textContent = message;
+      successMessage.style.display = 'block';
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricket Equipment Gallery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .header h1 {
+      color: #333;
+      font-size: 28px;
+    }
+    
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      margin-left: auto;
+    }
+    
+    .nav-item {
+      margin-left: 20px;
+    }
+    
+    .nav-link {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      background-color: #e47911;
+      color: white;
+    }
+    
+    #menu-close-button {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    
+    .photo-box {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      aspect-ratio: 1/1;
+    }
+    
+    .photo-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .photo-box:hover .overlay {
+      transform: translateY(0);
+    }
+    
+    .product-title {
+      color: white;
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 16px;
+      text-align: center;
+    }
+    
+    .buy-now {
+      display: block;
+      background-color: #38a169;
+      color: white;
+      text-align: center;
+      padding: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .buy-now:hover {
+      background-color: #2f855a;
+    }
+    
+    @media (max-width: 1024px) {
+      .photo-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .photo-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .nav-menu {
+        margin-left: 0;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .photo-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+      
+      .header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .nav-menu {
+        margin-top: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Amazon Shopping Items</h1>
+      <ul class="nav-menu">
+        <button id="menu-close-button" class="fas fa-times"></button>
+        <li class="nav-item">
+          <a href="index.php" class="nav-link">Home</a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="photo-grid">
+      <!-- Item 1 -->
+      <div class="photo-box">
+        <img src="amazon_photo\bat.png" alt="Cricket Bat" class="photo">
+        <div class="overlay">
+          <div class="product-title">Cricket Bat</div>
+          <a href="https://www.amazon.in/Jaspo-Slog-Carbonax-Cricket-Bat/dp/B0DVGV8V48/ref=sxin_15_sbv_search_btf?content-id=amzn1.sym.288d7cd9-bdfb-4778-882a-c15de0f76151%3Aamzn1.sym.288d7cd9-bdfb-4778-882a-c15de0f76151&cv_ct_cx=Professional%2BCricket%2BBat&keywords=Professional%2BCricket%2BBat&pd_rd_i=B0DVGV8V48&pd_rd_r=6640fc67-c15c-4bcf-b2a4-6fdfc76182c2&pd_rd_w=va3Bb&pd_rd_wg=yWWxo&pf_rd_p=288d7cd9-bdfb-4778-882a-c15de0f76151&pf_rd_r=2BXHVC5Q4K734AW4BAPW&qid=1744087957&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81&th=1" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 2 -->
+      <div class="photo-box">
+        <img src="amazon_photo/ball.png" alt="Cricket Ball" class="photo">
+        <div class="overlay">
+          <div class="product-title">Cricket Ball</div>
+          <a href="https://www.amazon.in/dp/B0DBDHRTKF/ref=sspa_dk_detail_0?pd_rd_i=B0DBDHRTKF&pd_rd_w=HviMQ&content-id=amzn1.sym.9f1cb690-f0b7-44de-b6ff-1bad1e37d3f0&pf_rd_p=9f1cb690-f0b7-44de-b6ff-1bad1e37d3f0&pf_rd_r=77A3Z4TWM3SPJN8PZNNZ&pd_rd_wg=plUlP&pd_rd_r=295713e8-2a53-4e1b-aeb3-5c3a1a5d89d1&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM&th=1" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 6 -->
+      <div class="photo-box">
+        <img src="amazon_photo/stump.png" alt="Cricket Stumps" class="photo">
+        <div class="overlay">
+          <div class="product-title">Cricket Stumps</div>
+          <a href="https://www.amazon.in/Cockatoo-Fluorescent-Standard-Professional-Tournament/dp/B0CCYG7ZQ8/ref=sr_1_2_sspa?crid=RL4KUSX8QA4N&dib=eyJ2IjoiMSJ9.g4yDCFhTtYFEU3DXtBlyPJIczBbopjsQxkLG2CgD7kuPq2TiWKh9L9U4qVg_9sngFdeC3I5P-sovbYP_9NsJDxeX7A7uySIx2V1bM6yRb-zcmy1qoHOSjLCIk40x3XMsTjA6qRxVNpEwGRiN1n8pal0_tEM6vKcJJejQy-cpCYSVtFXw12QZiXVcmLyDnI-2pjDeuiSnX7YeZGzMK8qKFBAqJG3GTOPIgFZVnqX3p2MWmahqRMXrJE0o283f1z5IONvQCY4PQi4arr5FNB14g43frP088VYomSwn3MTk3Cw.1FtWMef72Wp4PMxxjRvVsWYUviewFKAdUF3SrxT-16w&dib_tag=se&keywords=Cricket%2BStumps&qid=1744118825&sprefix=cricket%2Bstumps%2Caps%2C676&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 2 -->
+      <div class="photo-box">
+        <img src="amazon_photo/cons.png" alt="Cricket Ball" class="photo">
+        <div class="overlay">
+          <div class="product-title">Training Cones Set</div>
+          <a href="https://www.amazon.in/BELCO-SPORTS-Markers-Agility-Combos/dp/B07ZVRHVJ4/ref=sr_1_6?crid=NXXDN64ZCU4Y&dib=eyJ2IjoiMSJ9.fHeWZ0u4XRniYEhj57xhYCD_UW5J5Dvgne4w8vXTEBUCIhNg-SE6RvA3MfGCU7BvGTYby96V7ze2gH6CZki5qMKMqnt-t2YaKxtGnD0wYcfG6-1ZWqu9ekU0X2KZz0Mx1GNwzeIEo0j1FLoq9go46CKhJGhkZRFrpMHEnt4gR7usHZq_cty54jmPrKmIM2BEar7SR4yJMoijxAjdBrAq4fIXLRSTKP9B8C6Th0_5RF6V6TqcMzAGDmwxiiY-Weteo4_eWKQ0R6lrlQpmFzk1CMOH4IPtAuhsHjEPWRvybCc.nZtj2i0Mjf13GObxozvlL2_40QNu9I1H_QylOID5KFg&dib_tag=se&keywords=Cones%2Bor%2BTape&qid=1744119957&sprefix=cones%2Bor%2Btape%2Caps%2C360&sr=8-6&th=1" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+
+      <!-- Item 7 -->
+      <div class="photo-box">
+        <img src="amazon_photo/jersey.png" alt="Cricket Jersey" class="photo">
+        <div class="overlay">
+          <div class="product-title">Cricket Jersey</div>
+          <a href="https://www.amazon.in/Dika-Sports-Customized-Badminton-red-Black/dp/B0DKD8SHM5/ref=sr_1_20?crid=1T7AKT001YEQY&dib=eyJ2IjoiMSJ9.F-gVyO5cWz3s7-SQIrP-4juvdDxWBJ-3uWYPgKtMIbqubyhAfluk5AemlxAiR2Jp1QoQ3LiSBpUNb-fimxss1N64QegF_79RWdQBY6Eeh8PHpBeuIStla0HXQ9V54_qO3QaUxChf2p-v4SIPZxE3LFerr8uuiFxhUjzRC66z3IAAIp6mD3hPUB6xtKZNj4XAA9n4CG1Edo1IVc-JaQ_jPfqDVuWscEjrVHZURoQDnqBPuPdk--mHBUbOIOk-KgAPG7nQ1wz3MDitWZKOXBctyCLOr3UOyRLJmaXnyAlpWnQ.tPBQjiIMjgxorE6SlxCX0_w2XQTh73WuQSprwaCRssU&dib_tag=se&keywords=cricket%2Bjersey%2Bfor%2Bmen&qid=1744118997&sprefix=Cricket%2BJersey%2Caps%2C423&sr=8-20&th=1&psc=1" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+      
+      <div class="photo-box">
+        <img src="amazon_photo/bag.png" alt="Cricket Kit Bag" class="photo">
+        <div class="overlay">
+          <div class="product-title">Cricket Kit Bag</div>
+          <a href="https://www.amazon.in/Whackk-Backpack-Trolley-Wheelie-Compartment/dp/B0D543KMSX/ref=sr_1_15?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.f5OCmjH2KSx0d7BJuYkVB5CbAVUnpiC-kE-ynHEoB08-BHawWpwOmHQtI3kw8RqNSJVqt_ZsCqs1wxEcDWKhe21QcHzfvFaWBlW9miBpbbBuWv9aM_kDFwjJJQRhS8S2igoqh0wWx1ycCZTrZMHQ1Wdgl5AEFaVAf9ltDq20iU3yU8S1vqxLvPIK40ziIJu79HDdB-Hz5yE_c7VQyQkU0-2Ry1jne3Z-WHI4UcXJ0CuhOveIbKEAJBwQLjkmtwFe7mDXYH4M1aVP61pohB73VRWl4QlIQbQhwiGdpf1TOpk.bJyjgAk3kCQzKlgez0mQ0vI2yhb8KClZum6oPTQc_d8&dib_tag=se&keywords=cricket+kit+bag+with+wheels&pd_rd_r=622ad336-15d5-43bf-b493-449483f0e178&pd_rd_w=h52s3&pd_rd_wg=Carvy&qid=1744119414&sr=8-15" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 14 -->
+      <div class="photo-box">
+        <img src="amazon_photo/hat.png" alt="Cricket Sun Hat" class="photo">
+        <div class="overlay">
+          <div class="product-title">Cricket Sun Hat</div>
+          <a href="https://www.amazon.in/PrimeBox-Classic-Packable-Outdoor-Protection/dp/B0C3CH1R6X/ref=sr_1_3?crid=33S0UK5RVOFPY&dib=eyJ2IjoiMSJ9.6IcJzRq03Ss3PQ0HMvl2jDEbdjodE9xvnLEoK2DrJv4iwg0ZH8-BQnczN9XHIDiv06SzAXpA8YzPcuDt0uI-Fm4DvDQoao0u24aOc4Elo3EPIQDP60StTSzRR-4ulq1NVSFzrg0efFBfI5pnaJm-sX5AKD-EkQzdvCQm-p2_RnbVpsXlEpIgJPg9qNnUCk9zW1uYv3epyd7y5Up5_YMF1dWhKmjgvblZAm61qFDkCmi5TqlsGeyOaRNfx6ajOIm1Y_h99ZRcKbBBsNlvxlx_74DoPZEJ1N63t53-uNOuHMA.tIDt9AY1gInWyNcQVO6H36iDVCVqXj_n34-EA909rXA&dib_tag=se&keywords=Cricket+Sun+Hat&qid=1744119652&sprefix=cricket+sun+hat%2Caps%2C528&sr=8-3" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 15 -->
+      <div class="photo-box">
+        <img src="amazon_photo/net.png" alt="Cricket Practice Net" class="photo">
+        <div class="overlay">
+          <div class="product-title">Cricket Practice Net</div>
+          <a href="https://www.amazon.in/Cricket-Batting-Practice-Training-Backyard/dp/B0BMV9M36W/ref=sr_1_4?crid=3OYAP2X0N1CM5&dib=eyJ2IjoiMSJ9.ZOoTkgi398dPCJvUn20E9p6JsX3-ShO34KO3G6gjIBDp2pWuOK86NhuRdxElIN3etkKi9CDmoq4HGajMmqtaKEbPjcUoHhz4BZ458YTAjOpOpinC19fmldztnv4pvggKlaj6MC51UiXgiaGJgKFZvrfqLELHokYwMYWmCzuQX6HiJdnfsgW-uFr21RCOc6KHRyEw7v-TGVi9XszOPBo2KaV4APhTfi19KbyfgUDjPi4w2HlHCOoW1PE8rIs-VQOtkAk3_NnSUGP0dd7lfGPAX09T5kkxSeuN7reAAHbg0Ys.Y0jybBgJlscDI65D85_2n3vKu3TsaR1M-c9gEOuUtFg&dib_tag=se&keywords=Cricket+Practice+Net&qid=1744119751&sprefix=cricket+practice+net%2Caps%2C526&sr=8-4" class="buy-now">Buy Now</a>
+        </div>
+      </div>
+    </div>
+  </div>z
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,254 @@
+<!-- Registration Button - Add this wherever you want the button to appear -->
+<button id="openRegistrationBtn" class="register-btn">Register Your Team</button>
+
+<!-- Modal Overlay and Content - Add this at the end of your body tag -->
+<div class="modal-overlay" id="registrationModal">
+  <div class="modal-content-sch">
+    <span class="close-registration" id="closeModal">&times;</span>
+    <h3>Register New Team</h3>
+    <form id="teamRegistrationForm">
+      <div class="form-group-sch">
+        <label for="teamName">Team Name</label>
+        <input type="text" id="teamName" required placeholder="Enter your team name">
+      </div>
+      <div class="form-group-sch">
+        <label for="captainName">Captain Name</label>
+        <input type="text" id="captainName" required placeholder="Enter captain's name">
+      </div>
+      <div class="form-group-sch">
+        <label for="contactNumber">Contact Number</label>
+        <input type="tel" id="contactNumber" required placeholder="Enter contact number">
+      </div>
+      <div class="form-group-sch">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required placeholder="Enter email address">
+      </div>
+      <div class="form-group-sch">
+        <label>Team Members <span id="playerCount">(6/16 players)</span></label>
+        <div id="teamMembers">
+          <!-- Initially create 6 player input fields -->
+          <!-- The rest will be added dynamically -->
+        </div>
+        <button type="button" id="addPlayerBtn" class="btn-add-player">Add Player</button>
+        <span class="players-counter">Min: 6 players, Max: 16 players</span>
+      </div>
+      <button type="submit" class="btn-sch">Register Team</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add this CSS to your existing stylesheet or in a style tag in the head -->
+<style>
+  /* Button style */
+  .register-btn {
+    background-color: #28a745;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .register-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* Modal styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-content-sch {
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+
+  .modal-content-sch h3 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .form-group-sch {
+    margin-bottom: 15px;
+  }
+
+  .form-group-sch label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-group-sch input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .member-row {
+    margin-bottom: 10px;
+  }
+
+  .btn-sch {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .btn-sch:hover {
+    background-color: #218838;
+  }
+  
+  .btn-add-player {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+  }
+  
+  .btn-add-player:hover {
+    background-color: #0069d9;
+  }
+  
+  .btn-add-player:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+
+  .players-counter {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .close-registration {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+  }
+</style>
+
+<!-- Add this JavaScript to your existing script or in a script tag before the closing body tag -->
+<script>
+  // Current player count
+  let playerCount = 0;
+  const maxPlayers = 16;
+  
+  // Function to add a new player input field
+  function addPlayerField(playerNumber) {
+    const memberRow = document.createElement('div');
+    memberRow.className = 'member-row';
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'member-name';
+    input.placeholder = `Player ${playerNumber} name`;
+    input.required = true;
+    
+    memberRow.appendChild(input);
+    document.getElementById('teamMembers').appendChild(memberRow);
+    
+    playerCount++;
+    updatePlayerCount();
+  }
+  
+  // Function to update player count display and button status
+  function updatePlayerCount() {
+    document.getElementById('playerCount').textContent = `(${playerCount}/16 players)`;
+    
+    // Disable the add button if max players reached
+    const addBtn = document.getElementById('addPlayerBtn');
+    if (playerCount >= maxPlayers) {
+      addBtn.disabled = true;
+    } else {
+      addBtn.disabled = false;
+    }
+  }
+  
+  // Initialize with 6 players when the modal opens
+  function initializeForm() {
+    // Clear existing player fields
+    document.getElementById('teamMembers').innerHTML = '';
+    playerCount = 0;
+    
+    // Add initial 6 player fields
+    for (let i = 1; i <= 6; i++) {
+      addPlayerField(i);
+    }
+  }
+  
+  // Open registration modal
+  document.getElementById('openRegistrationBtn').addEventListener('click', function() {
+    // Initialize the form
+    initializeForm();
+    
+    // Show the modal
+    document.getElementById('registrationModal').style.display = 'flex';
+    
+    // Apply blur to the background (adds a class to body that you can use to blur everything except the modal)
+    document.body.classList.add('modal-open');
+  });
+  
+  // Add player button click handler
+  document.getElementById('addPlayerBtn').addEventListener('click', function() {
+    if (playerCount < maxPlayers) {
+      addPlayerField(playerCount + 1);
+    }
+  });
+
+  // Close modal
+  document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('registrationModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
+  });
+
+  // Handle form submission
+  document.getElementById('teamRegistrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Validate minimum number of players (6)
+    if (playerCount < 6) {
+      alert("Please add at least 6 players to the team.");
+      return;
+    }
+    
+    // You can add more validation logic or form submission to server here
+    
+    alert("Team Registered Successfully!");
+    
+    // Close modal
+    document.getElementById('registrationModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
+  });
+</script>

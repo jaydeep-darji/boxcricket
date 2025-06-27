@@ -1,0 +1,522 @@
+:root {
+    ----primary-color: #2c3e50;
+    ----secondary-color: #27ae60;
+    ----accent-color: #e74c3c;
+    ----light-color: #ecf0f1;
+    ----dark-color: #34495e;
+    ----available-color: #2ecc71;
+    ----booked-color: #e74c3c;
+    ----pending-color: #f39c12;
+}
+
+.body-sch {
+    background-color: var(----light-color);
+    color: var(----dark-color);
+    line-height: 1.6;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+h1-m{
+    font-size: 28px;
+    font-weight: 700;
+}
+.container-sch {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.sche {
+    background-color: var(----primary-color);
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sche h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.sche-list {
+    background-color: var(----dark-color);
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.sche-list ul {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+
+.sche-list ul li {
+    padding: 15px 20px;
+}
+
+.sche-list ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.sche-list ul li a:hover {
+    color: var(----secondary-color);
+}
+
+.sche-list ul li a.active {
+    color: var(----secondary-color) !important;
+    position: relative;
+}
+
+.sche-list ul li a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(----secondary-color);
+    border-radius: 3px;
+}
+
+.dashboard-sch {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 30px;
+}
+
+@media (max-width: 992px) {
+    .dashboard-sch {
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-sch {
+        grid-template-columns: 1fr;
+    }
+    
+    .sche-list ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .sche-list ul li {
+        padding: 10px 0;
+    }
+}
+
+.sidebar-sch {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+.sidebar-sch h3 {
+    margin-bottom: 15px;
+    color: var(----primary-color);
+    border-bottom: 2px solid var(----secondary-color);
+    padding-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.filters-sch {
+    margin-bottom: 25px;
+}
+
+.filter-group-sch {
+    margin-bottom: 15px;
+}
+
+.filter-group-sch label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(----dark-color);
+}
+
+.filter-group-sch select,
+.filter-group-sch input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.filter-group-sch select:focus,
+.filter-group-sch input[type="date"]:focus {
+    outline: none;
+    border-color: var(----secondary-color);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+}
+
+.team-registration-sch {
+    margin-top: 30px;
+}
+
+.btn-sch {
+    display: inline-block;
+    background-color: var(----secondary-color);
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
+}
+
+.btn-sch:hover {
+    background-color: #219653;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(39, 174, 96, 0.3);
+}
+
+.btn-sch:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(39, 174, 96, 0.2);
+}
+
+.btn-accent-sch {
+    display: inline-block;
+    background-color: red;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
+}
+
+.btn-accent-sch:hover {
+    background-color: #c0392b;
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn-accent-sch:active {
+    box-shadow: 0 2px 3px rgba(231, 76, 60, 0.2);
+}
+
+.schedule-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.live-indicator {
+    display: flex;
+    align-items: center;
+    color: var(----accent-color);
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.pulse {
+    width: 12px;
+    height: 12px;
+    background-color: var(----accent-color);
+    border-radius: 50%;
+    margin-right: 10px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+.date-navigation-sch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.date-navigation-sch h3 {
+    font-size: 1.4rem;
+    color: var(----primary-color);
+    margin: 0;
+}
+
+.date-navigation-sch .btn-sch {
+    width: auto;
+    margin: 0;
+    padding: 8px 16px;
+}
+
+.status-indicator-sch {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 25px;
+    flex-wrap: wrap;
+    background-color: rgba(236, 240, 241, 0.5);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.status-item-sch {
+    display: flex;
+    align-items: center;
+    margin: 5px 15px;
+}
+
+.status-color-sch {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border-radius: 4px;
+}
+
+.schedule-header-sch {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+    background-color: var(----primary-color);
+    color: white;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+}
+
+.time-column, .day-column {
+    padding: 15px 15px;
+    text-align: center;
+    font-weight: bold;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.schedule-grid-sch {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+}
+
+.time-slots-sch {
+    display: flex;
+    flex-direction: column;
+}
+
+.time-slot {
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    font-weight: 600;
+    background-color: rgba(236, 240, 241, 0.3);
+}
+
+.day-slots-sch {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.slot {
+    height: 53px;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-left: none;
+    padding: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: 500;
+}
+
+.slot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.available {
+    background-color: var(----available-color);
+    color: white;
+}
+
+.booked {
+    background-color: var(----booked-color);
+    color: white;
+}
+
+.pending {
+    background-color: var(----pending-color);
+    color: white;
+}
+
+.modal-sch {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content-sch {
+    background-color: white;
+    margin: 10% auto;
+    padding: 35px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh; /* important */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: slideIn 0.3s ease;
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-sch {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(----primary-color);
+    transition: color 0.3s;
+}
+
+.close-sch:hover {
+    color: var(----accent-color);
+}
+
+.form-group-sch {
+    margin-bottom: 20px;
+}
+
+.form-group-sch label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(----dark-color);
+}
+
+.form-group-sch input,
+.form-group-sch select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group-sch input:focus,
+.form-group-sch select:focus {
+    outline: none;
+    border-color: var(----secondary-color);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+}
+
+.form-group-sch input[readonly] {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.toast-sch {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(----secondary-color);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1100;
+    font-weight: 500;
+}
+
+.toast-sch.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 580px) {
+    .schedule-header-sch {
+        grid-template-columns: 70px repeat(7, 1fr);
+    }
+    
+    .schedule-grid-sch {
+        grid-template-columns: 70px 1fr;
+    }
+    
+    .time-slot {
+        height: 80px;
+        font-size: 0.8rem;
+    }
+    
+    .slot {
+        height: 70px;
+        font-size: 0.75rem;
+        padding: 4px;
+    }
+    
+    .date-navigation-sch h3 {
+        font-size: 1.1rem;
+    }
+    
+    .date-navigation-sch .btn-sch {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
